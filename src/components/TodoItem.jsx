@@ -6,6 +6,18 @@ function TodoItem({ todo }) {
     const [isTodoEditable, setIsTodoEditable] = useState(false);
     const [todoMsg, setTodoMsg] = useState(todo.todo);
 
+    const editTodo = () => {
+        updateTodo(todo.id, todoMsg)
+        setIsTodoEditable(false);
+    }
+
+    const destroyTodo = () => {
+        const res = confirm("Are you sure ? ");
+        if(res){
+            deleteTodo(todo.id);
+        }
+    }
+
     
 
     return (
@@ -18,7 +30,7 @@ function TodoItem({ todo }) {
                 type="checkbox"
                 className="cursor-pointer"
                 checked={todo.completed}
-                onChange={toggleCompleted}
+                onChange={()=> toggleComplete(todo.id)}
             />
             <input
                 type="text"
@@ -46,7 +58,7 @@ function TodoItem({ todo }) {
             {/* Delete Todo Button */}
             <button
                 className="inline-flex w-8 h-8 rounded-lg text-sm border border-black/10 justify-center items-center bg-gray-50 hover:bg-gray-100 shrink-0"
-                onClick={() => deleteTodo(todo.id)}
+                onClick={destroyTodo}
             >
                 ❌
             </button>

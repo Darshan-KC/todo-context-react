@@ -11,27 +11,23 @@ const TodoContext = createContext({
 });
 
 export function TodoProvider({ children }) {
-    useEffect(() => {
-        const todos = JSON.parse(localStorage.getItem("todos"));
+    const [todos, setTodos] = useState([]);
 
-        if (todos && todos.length > 0) {
-            setTodos(todos);
+    useEffect(() => {
+        const tasks = JSON.parse(localStorage.getItem("todos"));
+
+        if (tasks && tasks.length > 0) {
+            setTodos(tasks);
         }
     }, []);
 
-    useEffect(()=> {
-        const todos = JSON.stringify(todos);
+    useEffect(() => {
+        const tasks = JSON.stringify(todos);
 
-        localStorage.setItem("todos", todos);
+        localStorage.setItem("todos", tasks);
     }, [todos]);
 
-    const [todos, setTodos] = useState([
-        {
-            id: 1,
-            todo: "This is for testing",
-            completed: false,
-        }
-    ]);
+
 
     const addTodo = (todo) => {
         setTodos((prev) => [...prev, { id: Date.now(), todo, completed: false }])
@@ -44,12 +40,12 @@ export function TodoProvider({ children }) {
     };
 
     const deleteTodo = (id) => {
-        setTodos((prev) => prev.filter(prev.id !== id));
+        setTodos((prev) => prev.filter((t) => t.id !== id));
     };
 
     const toggleComplete = (id) => {
         setTodos((prev) => (
-            prev.map((t) => (t.id === id ? { ...t, completed: !completed } : t))
+            prev.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t))
         ));
     };
 
